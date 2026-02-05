@@ -1,5 +1,6 @@
-import { findUserEmail } from "../query";
+import { addUserToDb, findUserEmail } from "../query";
 import bcrypt from "bcrypt";
+import { validationResult } from "express-validator";
 
 export async function registerController(req, res) {
   const { fullName, email, password } = req.body;
@@ -17,9 +18,9 @@ export async function registerController(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
     await addUserToDb(fullName, email, hashedPassword);
 
-    return res.send("Registration success");
+    return res.status(200).send("Registration success");
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error registrating user");
+    res.status(500).send(`${err}`);
   }
 }
