@@ -15,5 +15,5 @@ export async function signToken(userId) {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("Jwt secret is not set");
 
-  jwt.sign({ userId }, secret, { expiresIn: "7d" });
+  return jwt.sign({ userId }, secret, { expiresIn: "7d" });
 }
