@@ -1,39 +1,23 @@
-import { beforeEach, test, expect, describe } from "vitest";
+import { beforeEach, test, expect, describe, it } from "vitest";
 import request from "supertest";
 import { app } from "../../src/index.js";
-import { resetDb } from "../resetDb.js";
-import { prisma } from "../../src/prismaClient.js";
-import bcrypt from "bcrypt";
-
-let existingUser;
-
-beforeEach(async () => {
-  await resetDb();
-
-  const passwordHash = await bcrypt.hash("password123", 10);
-
-  existingUser = await prisma.user.create({
-    data: {
-      email: "existingRegister@test.com",
-      passwordHash,
-      name: "Existing User",
-    },
-  });
-});
 
 describe("Registration tests", () => {
   it("Register success", async () => {
-    const res = await request(app).post("/register").send({
-      email: "test@test.com",
-      password: "password123",
-      fullName: "Test User",
-    });
+    const res = await request(app)
+      .post("/register")
+      .set("Content-Type", "application/json")
+      .send({
+        email: "test@test.com",
+        password: "password123",
+        name: "Test User2",
+      });
 
     expect(res.status).toBe(200);
     expect(res.text).toBe("Registration success");
   });
 
-  it("Registration fails, use already exists", async () => {
+  it("Registration fails, user already exists", async () => {
     const res = await request(app).post("/register").send({
       email: "existingRegister@test.com",
       password: "password123",
@@ -47,7 +31,7 @@ describe("Registration tests", () => {
   test("Registration fails: missing email", async () => {
     const res = await request(app).post("/register").send({
       password: "password123",
-      fullName: "Test User",
+      name: "Test User",
     });
 
     expect(res.status).toBe(400);
@@ -57,7 +41,7 @@ describe("Registration tests", () => {
     const res = await request(app).post("/register").send({
       email: "not-an-email",
       password: "password123",
-      fullName: "Test User",
+      name: "Test User",
     });
 
     expect(res.status).toBe(400);
@@ -67,7 +51,7 @@ describe("Registration tests", () => {
     const res = await request(app).post("/register").send({
       email: "short@test.com",
       password: "pass12",
-      fullName: "Test User",
+      name: "Test User",
     });
 
     expect(res.status).toBe(400);
@@ -77,7 +61,7 @@ describe("Registration tests", () => {
     const res = await request(app).post("/register").send({
       email: "nonumber@test.com",
       password: "passwordpassword",
-      fullName: "Test User",
+      name: "Test User",
     });
 
     expect(res.status).toBe(400);

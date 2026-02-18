@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import passport from "passport";
-import initPassport from "../src/auth/passport";
 import registerRouter from "./routes/register&LoginRoutes";
+import { categoryRoute } from "./routes/categoryRoutes";
 
 dotenv.config();
 
@@ -16,6 +16,7 @@ app.use(express.json());
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use(registerRouter);
+app.use(categoryRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API running on ${PORT}`));

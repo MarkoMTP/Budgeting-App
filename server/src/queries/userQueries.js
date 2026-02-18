@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../prismaClient";
 
 export const findUserEmail = async function (email) {
   const result = await prisma.user.findUnique({
@@ -11,11 +9,12 @@ export const findUserEmail = async function (email) {
 };
 
 export const addUserToDb = async function (fullName, email, password) {
-  await prisma.user.create({
+  const result = await prisma.user.create({
     data: {
       name: fullName,
       email,
       passwordHash: password,
     },
   });
+  return result;
 };

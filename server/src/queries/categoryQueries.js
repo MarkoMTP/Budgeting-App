@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../prismaClient";
 
 export const createCategory = async (name, userId) => {
   return prisma.category.create({
@@ -17,4 +15,10 @@ export const findCategoryByName = async function (name) {
   });
 
   return result;
+};
+
+export const deleteCategoryWithId = async function (categoryId) {
+  await prisma.category.delete({
+    where: { id: categoryId },
+  });
 };

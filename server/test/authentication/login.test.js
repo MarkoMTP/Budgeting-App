@@ -1,32 +1,16 @@
-import { beforeEach, test, expect, describe } from "vitest";
+import { beforeEach, test, expect, describe, it } from "vitest";
 import request from "supertest";
 import { app } from "../../src/index.js";
-import { resetDb } from "../resetDb.js";
-import { prisma } from "../../src/prismaClient.js";
-import bcrypt from "bcrypt";
-
-let existingUser;
-
-beforeEach(async () => {
-  await resetDb();
-
-  const passwordHash = await bcrypt.hash("password123", 10);
-
-  existingUser = await prisma.user.create({
-    data: {
-      email: "existingLogin@test.com",
-      passwordHash,
-      name: "Existing User",
-    },
-  });
-});
 
 describe("Login tests", () => {
   it("Successful user login", async () => {
-    const res = await request(app).post("/login").send({
-      email: "existingLogin@test.com",
-      password: "password123",
-    });
+    const res = await request(app)
+      .post("/login")
+      .set("Content-Type", "application/json")
+      .send({
+        email: "existingLogin@test.com",
+        password: "password123",
+      });
 
     expect(res.status).toBe(200);
   });
@@ -43,7 +27,7 @@ describe("Login tests", () => {
 
   it("Login fails with wrong password", async () => {
     const res = await request(app).post("/login").send({
-      email: "existingLogin@test.com",
+      email: "existingLogin2@test.com",
       password: "wrongPassword",
     });
 
@@ -52,7 +36,7 @@ describe("Login tests", () => {
 
   it("Login fails when password is missing", async () => {
     const res = await request(app).post("/login").send({
-      email: "existingLogin@test.com",
+      email: "existingLogi2@test.com",
     });
 
     expect(res.status).toBe(400);
