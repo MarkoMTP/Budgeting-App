@@ -23,11 +23,11 @@ describe("Category crud functions tests", () => {
 
   it("Deletes a new category successfully", async () => {
     const res = await request(app)
-      .post("/category/id/delete")
+      .delete("/category/deleteCategory/delete")
       .set("Authorization", `Bearer ${testToken}`)
       .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(res.text).toBe("Category with id was deleted successfully");
+    expect(res.text).toBe("Category2 has been successfully deleted");
   });
 });

@@ -17,6 +17,14 @@ export const findCategoryByName = async function (name) {
   return result;
 };
 
+export const findCategoryById = async function (id) {
+  const result = await prisma.category.findFirst({
+    where: { id },
+  });
+
+  return result;
+};
+
 export const deleteCategoryWithId = async function (categoryId) {
   await prisma.category.delete({
     where: { id: categoryId },
