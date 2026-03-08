@@ -3,6 +3,7 @@ import { createNewCategory } from "../controllers/category/createCategoryControl
 import { initPassport } from "../auth/passport";
 import passport from "passport";
 import { deleteCategory } from "../controllers/category/deleteCategoryController";
+import { editCategoryController } from "../controllers/category/editCategoryController";
 
 export const categoryRoute = express.Router();
 
@@ -18,4 +19,8 @@ categoryRoute.delete(
   deleteCategory
 );
 
-// categoryRoute.patch("/category/:id/edit");
+categoryRoute.patch(
+  "/category/:id/edit",
+  passport.authenticate("jwt", { session: false }),
+  editCategoryController
+);

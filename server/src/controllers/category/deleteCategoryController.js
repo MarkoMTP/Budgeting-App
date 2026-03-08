@@ -13,11 +13,12 @@ export async function deleteCategory(req, res) {
     //check if Category exists
     const categoryExists = await findCategoryById(id);
 
-    if (categoryExists) {
-      await deleteCategoryWithId(id);
+    if (!categoryExists) {
+      return res.status(400).send("Category does not exist");
     }
+    await deleteCategoryWithId(id);
 
-    res
+    return res
       .status(200)
       .send(`${categoryExists.name} has been successfully deleted`);
   } catch (err) {
