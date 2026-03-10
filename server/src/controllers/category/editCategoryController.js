@@ -1,4 +1,8 @@
-import { editCategory, findCategoryById } from "../../queries/categoryQueries";
+import {
+  editCategory,
+  findCategoryById,
+  findCategoryByName,
+} from "../../queries/categoryQueries";
 
 export async function editCategoryController(req, res) {
   const { id } = req.params;
@@ -12,6 +16,16 @@ export async function editCategoryController(req, res) {
       return res
         .status(400)
         .send("Category does not exist, you cannot edit it");
+
+    if (!name)
+      return res.status(400).send("Missing the new name for the category");
+
+    const checkCatName = await findCategoryByName(name);
+
+    if (checkCatName)
+      return res
+        .status(400)
+        .send("Fails editing category when new name is already in use");
 
     const newCat = await editCategory(id, name);
 

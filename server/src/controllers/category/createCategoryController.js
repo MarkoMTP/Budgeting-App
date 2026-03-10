@@ -17,7 +17,7 @@ export async function createNewCategory(req, res) {
 
   try {
     const categoryCheck = await findCategoryByName(name);
-    if (categoryCheck) return res.status(401).send("Category already exists");
+    if (categoryCheck) return res.status(400).send("Category already exists");
 
     const createdCategory = await createCategory(name, user.id);
     return res.status(200).send(createdCategory.name);

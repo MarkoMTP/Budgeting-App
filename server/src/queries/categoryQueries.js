@@ -39,3 +39,11 @@ export const editCategory = async function (categoryId, newName) {
 
   return newCat;
 };
+
+export const getCategoriesForUser = async function (userId) {
+  const result = await prisma.category.findMany({
+    where: { userId: userId },
+  });
+
+  return result;
+};
