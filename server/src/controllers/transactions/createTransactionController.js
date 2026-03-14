@@ -25,9 +25,11 @@ export async function createTransactionController(req, res) {
         .status(400)
         .send("Failed to create transaction, category does not exist");
 
+    const amountInCents = Math.round(Number(amount) * 100);
+
     const newCategory = await createTransaction(
       name,
-      amount,
+      amountInCents,
       categoryId,
       user.id
     );
