@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import passport from "passport";
 import registerRouter from "./routes/register&LoginRoutes";
 import { categoryRoute } from "./routes/categoryRoutes";
+import { transactionRoute } from "./routes/transactionRoutes";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use(registerRouter);
+app.use(transactionRoute);
 app.use(categoryRoute);
 
 const PORT = process.env.PORT || 3000;
