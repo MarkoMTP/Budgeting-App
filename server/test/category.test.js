@@ -22,7 +22,7 @@ describe("Category crud functions tests", () => {
     expect(res.text).toBe("Categories returned correctly");
   });
 
-  it("Gets all categories of the logged in user successfully", async () => {
+  it("Fails user has no categories ", async () => {
     await prisma.category.deleteMany();
 
     const res = await request(app)
