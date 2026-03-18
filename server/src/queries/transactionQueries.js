@@ -19,3 +19,10 @@ export const getAllTransactions = async (userId) => {
 
   return result;
 };
+
+export const getTranscationByCategoryId = async (categoryId, userId) => {
+  const result = await prisma.transaction.findMany({
+    where: { categoryId, userId },
+  });
+  return result;
+};
