@@ -57,12 +57,55 @@ beforeEach(async () => {
     ],
   });
 
-  await prisma.category.create({
-    data: {
-      id: "2Category",
-      name: "Food",
-      userId: "1Category",
-    },
+  await prisma.category.createMany({
+    data: [
+      {
+        id: "2Category",
+        name: "Food",
+        userId: "1Category",
+      },
+      {
+        id: "deleteCategory",
+        name: "Category2",
+        userId: "1Category",
+      },
+      {
+        id: "editCategory",
+        name: "editCategory",
+        userId: "1Category",
+      },
+      {
+        id: "lifestyle",
+        name: "lifestyle",
+        userId: "1Category",
+      },
+    ],
+  });
+  await prisma.transaction.createMany({
+    data: [
+      {
+        id: "transactionId1",
+        name: "uniqueName",
+        amount: 10,
+        categoryId: "lifestyle",
+        userId: "1Category",
+      },
+      {
+        id: "transactionId2",
+        name: "uniqueName2",
+        amount: 10,
+        categoryId: "lifestyle",
+        userId: "1Category",
+      },
+
+      {
+        id: "transactionId3",
+        name: "uniqueName3",
+        amount: 10,
+        categoryId: "2Category",
+        userId: "1Category",
+      },
+    ],
   });
 });
 

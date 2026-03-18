@@ -71,64 +71,34 @@ describe("Transactions crud function tests", () => {
   // GET transactions tests
 
   it("Gets all transactions successfully", async () => {
-    const uniqueName = `Get All Transaction ${Date.now()}`;
-
-    await request(app)
-      .post("/transactions")
-      .set("Authorization", `Bearer ${testToken}`)
-      .set("Content-Type", "application/json")
-      .send({ name: uniqueName, amount: 10, categoryId: "lifestyle" });
-
     const res = await request(app)
       .get("/transactions")
       .set("Authorization", `Bearer ${testToken}`)
       .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.some((t) => t.name === uniqueName)).toBe(true);
+    expect(res.body[0].name).toBe("uniqueName");
+    expect(res.body[1].name).toBe("uniqueName2");
   });
 
-  it.only("Gets transactions by category successfully", async () => {
-    const uniqueName = `Category Transaction ${Date.now()}`;
-
-    await request(app)
-      .post("/transactions")
-      .set("Authorization", `Bearer ${testToken}`)
-      .set("Content-Type", "application/json")
-      .send({ name: uniqueName, amount: 10, categoryId: "lifestyle" });
-
+  it("Gets transactions by category successfully", async () => {
     const res = await request(app)
-      .get("/transactions/category/lifestyle")
+      .get("/transactions/category/2Category")
       .set("Authorization", `Bearer ${testToken}`)
       .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.some((t) => t.name === uniqueName)).toBe(true);
+    expect(res.body[0].name).toBe("uniqueName3");
   });
 
   it("Gets a single transaction by id successfully", async () => {
-    const uniqueName = `Single Transaction ${Date.now()}`;
-
-    await request(app)
-      .post("/transactions")
-      .set("Authorization", `Bearer ${testToken}`)
-      .set("Content-Type", "application/json")
-      .send({ name: uniqueName, amount: 10, categoryId: "lifestyle" });
-
-    const allTransactions = await request(app)
-      .get("/transactions")
-      .set("Authorization", `Bearer ${testToken}`);
-
-    const created = allTransactions.body.find((t) => t.name === uniqueName);
-
     const res = await request(app)
-      .get(`/transactions/${created.id}`)
-      .set("Authorization", `Bearer ${testToken}`);
+      .get(`/transactions/transactionId1`)
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(res.body.name).toBe(uniqueName);
+    expect(res.body.name).toBe("uniqueName");
   });
 
   it("Fails to get a transaction if it does not exist", async () => {
@@ -138,5 +108,25 @@ describe("Transactions crud function tests", () => {
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("Transaction does not exist");
+  });
+
+  it("Fails to get a transactions if category does not have them", async () => {
+    const res = await request(app)
+      .get("/transactions/category/editCategory")
+      .set("Authorization", `Bearer ${testToken}`);
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("No transactions found in category");
+  });
+
+  it("Fails to get a transactions if user does not have them", async () => {
+    await prisma.transaction.deleteMany();
+
+    const res = await request(app)
+      .get("/transactions")
+      .set("Authorization", `Bearer ${testToken}`);
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("User has no transactions ");
   });
 });

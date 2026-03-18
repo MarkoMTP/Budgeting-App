@@ -11,7 +11,8 @@ export async function getTransactionsByCategoryController(req, res) {
   try {
     const transactions = await getTranscationByCategoryId(categoryId, user.id);
 
-    if (!transactions) return res.status(400).send("No transactions found");
+    if (transactions.length === 0)
+      return res.status(400).send("No transactions found in category");
 
     return res.status(200).send(transactions);
   } catch (err) {

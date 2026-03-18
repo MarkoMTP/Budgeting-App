@@ -10,6 +10,9 @@ export async function getTransactionsController(req, res) {
   try {
     const transactions = await getAllTransactions(user.id);
 
+    if (transactions.length === 0)
+      return res.status(400).send("User has no transactions ");
+
     return res.status(200).json(transactions);
   } catch (err) {
     console.error("Error fetching transactions:", err);
