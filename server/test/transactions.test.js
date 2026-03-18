@@ -129,4 +129,24 @@ describe("Transactions crud function tests", () => {
     expect(res.status).toBe(400);
     expect(res.text).toBe("User has no transactions ");
   });
+
+  // DELETE transaction test
+
+  it("Successfully deletes a transaction", async () => {
+    const res = await request(app)
+      .delete("/transactions/transactionDelete")
+      .set("Authorization", `Bearer ${testToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toBe("Successfully deleted transaction");
+  });
+
+  it.only("Fails to delete a non-existent transaction", async () => {
+    const res = await request(app)
+      .delete("/transactions/non-existent")
+      .set("Authorization", `Bearer ${testToken}`);
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Transaction does not exist");
+  });
 });

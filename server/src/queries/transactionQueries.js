@@ -26,3 +26,16 @@ export const getTranscationByCategoryId = async (categoryId, userId) => {
   });
   return result;
 };
+
+export const getTranscationById = async (id) => {
+  const result = await prisma.transaction.findUnique({
+    where: { id },
+  });
+  return result;
+};
+
+export const deleteTransactionWithId = async function (id) {
+  await prisma.transaction.delete({
+    where: { id },
+  });
+};
