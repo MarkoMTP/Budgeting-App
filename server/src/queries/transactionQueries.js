@@ -11,3 +11,11 @@ export const createTransaction = async (name, amount, categoryId, userId) => {
   });
   return result;
 };
+
+export const getAllTransactions = async (userId) => {
+  const result = await prisma.transaction.findMany({
+    where: { userId },
+  });
+
+  return result;
+};

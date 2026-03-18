@@ -67,4 +67,76 @@ describe("Transactions crud function tests", () => {
       "Failed to create transaction, category does not exist"
     );
   });
+
+  // GET transactions tests
+
+  it("Gets all transactions successfully", async () => {
+    const uniqueName = `Get All Transaction ${Date.now()}`;
+
+    await request(app)
+      .post("/transactions")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ name: uniqueName, amount: 10, categoryId: "lifestyle" });
+
+    const res = await request(app)
+      .get("/transactions")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.some((t) => t.name === uniqueName)).toBe(true);
+  });
+
+  it.only("Gets transactions by category successfully", async () => {
+    const uniqueName = `Category Transaction ${Date.now()}`;
+
+    await request(app)
+      .post("/transactions")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ name: uniqueName, amount: 10, categoryId: "lifestyle" });
+
+    const res = await request(app)
+      .get("/transactions/category/lifestyle")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.some((t) => t.name === uniqueName)).toBe(true);
+  });
+
+  it("Gets a single transaction by id successfully", async () => {
+    const uniqueName = `Single Transaction ${Date.now()}`;
+
+    await request(app)
+      .post("/transactions")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ name: uniqueName, amount: 10, categoryId: "lifestyle" });
+
+    const allTransactions = await request(app)
+      .get("/transactions")
+      .set("Authorization", `Bearer ${testToken}`);
+
+    const created = allTransactions.body.find((t) => t.name === uniqueName);
+
+    const res = await request(app)
+      .get(`/transactions/${created.id}`)
+      .set("Authorization", `Bearer ${testToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.name).toBe(uniqueName);
+  });
+
+  it("Fails to get a transaction if it does not exist", async () => {
+    const res = await request(app)
+      .get("/transactions/nonexistent-id")
+      .set("Authorization", `Bearer ${testToken}`);
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Transaction does not exist");
+  });
 });
