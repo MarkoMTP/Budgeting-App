@@ -12,15 +12,23 @@ export const createBudget = async (userId, categoryId, amount, month, year) => {
   });
 };
 
-export const findBudgetByAll = async function (
+export const findSpecificBudget = async function (
   userId,
   categoryId,
   month,
   year
 ) {
-  const result = await prisma.category.findFirst({
+  const result = await prisma.budget.findFirst({
     where: { userId, categoryId, month, year },
   });
 
   return result;
+};
+
+export const getAllBudgetsOfCategory = async function (categoryId) {
+  const budgets = await prisma.budget.findMany({
+    where: { categoryId },
+  });
+
+  return budgets;
 };

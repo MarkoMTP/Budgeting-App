@@ -105,6 +105,35 @@ beforeEach(async () => {
         categoryId: "2Category",
         userId: "1Category",
       },
+      {
+        id: "transactionDelete",
+        name: "uniqueName34",
+        amount: 10,
+        categoryId: "2Category",
+        userId: "1Category",
+      },
+    ],
+  });
+
+  await prisma.budget.createMany({
+    data: [
+      {
+        id: "budget1",
+        amount: 10,
+        year: 2024,
+        month: 11,
+        userId: "1Category",
+        categoryId: "lifestyle",
+      },
+
+      {
+        id: "budget2",
+        amount: 10,
+        year: 2024,
+        month: 10,
+        userId: "1Category",
+        categoryId: "lifestyle",
+      },
     ],
   });
 });

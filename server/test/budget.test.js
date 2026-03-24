@@ -86,4 +86,36 @@ describe("Budget create API", () => {
     expect(res.status).toBe(400);
     expect(res.text).toBe("Month is invalid");
   });
+
+  // get budgets CRUD functions
+
+  it("Successfully gets a budgets of a category", async () => {
+    const res = await request(app)
+      .get("/categories/lifestyle/budgets")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBe(2);
+  });
+
+  it("Fails invalid or missing categoryId", async () => {
+    const res = await request(app)
+      .get("/categories/l/budgets")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Category does not exist");
+  });
+
+  it("Fails, category has no budgets set", async () => {
+    const res = await request(app)
+      .get("/categories/2Category/budgets")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Category has no budgets");
+  });
 });

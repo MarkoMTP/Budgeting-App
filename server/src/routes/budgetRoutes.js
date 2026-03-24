@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import { createBudgetController } from "../controllers/budget/createBudgetController";
+import { getAllBudgetsController } from "../controllers/budget/getAllBudgetsController";
 
 export const budgetRoute = express.Router();
 
@@ -20,4 +21,8 @@ budgetRoute.patch(
   passport.authenticate("jwt", { session: false })
 );
 
-budgetRoute.get("/budgets", passport.authenticate("jwt", { session: false }));
+budgetRoute.get(
+  "/categories/:categoryId/budgets",
+  passport.authenticate("jwt", { session: false }),
+  getAllBudgetsController
+);
