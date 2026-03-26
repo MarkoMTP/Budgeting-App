@@ -2,6 +2,7 @@ import express from "express";
 import passport from "passport";
 import { createBudgetController } from "../controllers/budget/createBudgetController";
 import { getAllBudgetsController } from "../controllers/budget/getAllBudgetsController";
+import { deleteBudgetController } from "../controllers/budget/deleteBudgetController";
 
 export const budgetRoute = express.Router();
 
@@ -11,18 +12,19 @@ budgetRoute.post(
   createBudgetController
 );
 
-budgetRoute.delete(
-  "/budget/:id",
-  passport.authenticate("jwt", { session: false })
-);
-
-budgetRoute.patch(
-  "/budget/:id",
-  passport.authenticate("jwt", { session: false })
-);
-
 budgetRoute.get(
   "/categories/:categoryId/budgets",
   passport.authenticate("jwt", { session: false }),
   getAllBudgetsController
+);
+
+budgetRoute.delete(
+  "/categories/:categoryId/budgets/:budgetId",
+  passport.authenticate("jwt", { session: false }),
+  deleteBudgetController
+);
+
+budgetRoute.patch(
+  "/budgets/:id",
+  passport.authenticate("jwt", { session: false })
 );

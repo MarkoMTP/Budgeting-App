@@ -96,7 +96,7 @@ describe("Budget create API", () => {
       .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(2);
+    expect(res.body.length).toBe(5);
   });
 
   it("Fails invalid or missing categoryId", async () => {
@@ -117,5 +117,63 @@ describe("Budget create API", () => {
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("Category has no budgets");
+  });
+
+  // delete budget
+
+  it("Successfully deletes a budget", async () => {
+    const res = await request(app)
+      .delete("/categories/lifestyle/budgets/lifestyleBudgetJune2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(200);
+
+    expect(res.text).toBe("Budget deleted successfully");
+  });
+
+  it("Returns 400 when category does not exist while deleting", async () => {
+    const res = await request(app)
+      .delete("/categories/notRealCategory/budgets/lifestyleBudgetJuly2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Category does not exist");
+  });
+
+  it("Returns 400 when budget does not exist", async () => {
+    const res = await request(app)
+      .delete("/categories/lifestyle/budgets/notRealBudget")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Budget does not exist");
+  });
+
+  it("Returns 400 when budget does not belong to the category", async () => {
+    const res = await request(app)
+      .delete("/categories/2Category/budgets/lifestyleBudgetJuly2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Budget does not belong to this category");
+  });
+
+  it("After deleting one budget, category budgets length decreases", async () => {
+    await request(app)
+      .delete("/categories/lifestyle/budgets/lifestyleBudgetDeleteCheck")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    const res = await request(app)
+      .get("/categories/lifestyle/budgets")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBe(4);
   });
 });

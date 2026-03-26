@@ -25,10 +25,24 @@ export const findSpecificBudget = async function (
   return result;
 };
 
+export const findBudgetById = async function (id) {
+  const result = await prisma.budget.findFirst({
+    where: { id },
+  });
+
+  return result;
+};
+
 export const getAllBudgetsOfCategory = async function (categoryId) {
   const budgets = await prisma.budget.findMany({
     where: { categoryId },
   });
 
   return budgets;
+};
+
+export const deleteBudget = async function (budgetId) {
+  await prisma.budget.delete({
+    where: { id: budgetId },
+  });
 };
