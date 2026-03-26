@@ -46,3 +46,14 @@ export const deleteBudget = async function (budgetId) {
     where: { id: budgetId },
   });
 };
+
+export const editBudget = async function (id, amount) {
+  const result = await prisma.budget.update({
+    where: { id },
+    data: {
+      amount,
+    },
+  });
+
+  return result;
+};

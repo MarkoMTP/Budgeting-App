@@ -157,6 +157,14 @@ beforeEach(async () => {
         month: 8,
         categoryId: "lifestyle",
       },
+      {
+        id: "lifestyleBudgetAugust2024",
+        amount: 450,
+        year: 2024,
+        userId: "1Category",
+        month: 1,
+        categoryId: "lifestyle",
+      },
     ],
   });
 });

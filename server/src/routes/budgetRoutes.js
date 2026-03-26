@@ -3,6 +3,7 @@ import passport from "passport";
 import { createBudgetController } from "../controllers/budget/createBudgetController";
 import { getAllBudgetsController } from "../controllers/budget/getAllBudgetsController";
 import { deleteBudgetController } from "../controllers/budget/deleteBudgetController";
+import { editBudgetController } from "../controllers/budget/editBudgetController";
 
 export const budgetRoute = express.Router();
 
@@ -25,6 +26,7 @@ budgetRoute.delete(
 );
 
 budgetRoute.patch(
-  "/budgets/:id",
-  passport.authenticate("jwt", { session: false })
+  "/categories/:categoryId/budgets/:budgetId",
+  passport.authenticate("jwt", { session: false }),
+  editBudgetController
 );

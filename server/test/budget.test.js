@@ -96,7 +96,7 @@ describe("Budget create API", () => {
       .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(5);
+    expect(res.body.length).toBe(6);
   });
 
   it("Fails invalid or missing categoryId", async () => {
@@ -174,6 +174,86 @@ describe("Budget create API", () => {
       .set("Content-Type", "application/json");
 
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(4);
+    expect(res.body.length).toBe(5);
+  });
+
+  // PATCH budget
+
+  it("Successfully updates only the budget amount", async () => {
+    const patchRes = await request(app)
+      .patch("/categories/lifestyle/budgets/lifestyleBudgetAugust2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ amount: 250 });
+
+    expect(patchRes.text).toBe("Budget updated successfully");
+
+    const getRes = await request(app)
+      .get("/categories/lifestyle/budgets")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json");
+
+    expect(getRes.status).toBe(200);
+
+    const updatedBudget = getRes.body.find(
+      (budget) => budget.id === "lifestyleBudgetAugust2024"
+    );
+
+    expect(updatedBudget).toBeDefined();
+    expect(updatedBudget.amount).toBe(250);
+  });
+
+  it("Returns 400 when updating budget amount with a negative value", async () => {
+    const res = await request(app)
+      .patch("/categories/lifestyle/budgets/lifestyleBudgetSeptember2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ amount: -50 });
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Amount cannot be negative");
+  });
+
+  it("Returns 400 when budget does not exist while patching", async () => {
+    const res = await request(app)
+      .patch("/categories/lifestyle/budgets/notRealBudget")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ amount: 300 });
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Budget does not exist");
+  });
+
+  it("Returns 400 when category does not exist while patching", async () => {
+    const res = await request(app)
+      .patch("/categories/notRealCategory/budgets/lifestyleBudgetSeptember2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ amount: 300 });
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Category does not exist");
+  });
+
+  it("Returns 400 when budget does not belong to the category while patching", async () => {
+    const res = await request(app)
+      .patch("/categories/2Category/budgets/lifestyleBudgetAugust2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({ amount: 300 });
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("Budget does not belong to this category");
+  });
+
+  it("Returns 400 when patch body is empty", async () => {
+    const res = await request(app)
+      .patch("/categories/lifestyle/budgets/lifestyleBudgetSeptember2024")
+      .set("Authorization", `Bearer ${testToken}`)
+      .set("Content-Type", "application/json")
+      .send({});
+
+    expect(res.status).toBe(400);
   });
 });
