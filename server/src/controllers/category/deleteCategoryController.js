@@ -22,8 +22,6 @@ export async function deleteCategory(req, res) {
       .status(200)
       .send(`${categoryExists.name} has been successfully deleted`);
   } catch (err) {
-    return res
-      .status(500)
-      .json({ error: "Internal error while deleting a  category" });
+    return res.status(500).json({ error: `${err}` });
   }
 }

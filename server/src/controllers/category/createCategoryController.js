@@ -23,8 +23,6 @@ export async function createNewCategory(req, res) {
     return res.status(200).send(createdCategory.name);
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .json({ error: "Internal error while creating a new category" });
+    return res.status(500).json({ error: `${err}` });
   }
 }

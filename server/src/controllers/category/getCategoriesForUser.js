@@ -13,8 +13,6 @@ export async function getCategoriesForUserController(req, res) {
 
     return res.status(200).send("Categories returned correctly");
   } catch (err) {
-    return res
-      .status(500)
-      .json({ error: "Internal error while fetching categories for user" });
+    return res.status(500).json({ error: `${err}` });
   }
 }

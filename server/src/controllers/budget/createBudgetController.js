@@ -28,8 +28,6 @@ export async function createBudgetController(req, res) {
     return res.status(200).send("Budget set correctly");
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .json({ error: "Internal error while creating a new budget" });
+    return res.status(500).json({ error: `${err}` });
   }
 }

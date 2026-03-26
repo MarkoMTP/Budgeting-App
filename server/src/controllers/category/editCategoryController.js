@@ -34,8 +34,6 @@ export async function editCategoryController(req, res) {
       .send(`Categories name has been updated to ${newCat.name}`);
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .json({ error: "Internal error while editing a category" });
+    return res.status(500).json({ error: `${err}` });
   }
 }

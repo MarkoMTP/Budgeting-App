@@ -22,6 +22,6 @@ export async function getAllBudgetsController(req, res) {
     return res.status(200).json(budgets);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Something went wrong" });
+    return res.status(500).json({ message: `${err}` });
   }
 }
