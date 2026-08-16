@@ -1,32 +1,32 @@
 import express from "express";
 import passport from "passport";
-import { createBudgetController } from "../controllers/budget/createBudgetController";
-import { getAllBudgetsController } from "../controllers/budget/getAllBudgetsController";
-import { deleteBudgetController } from "../controllers/budget/deleteBudgetController";
-import { editBudgetController } from "../controllers/budget/editBudgetController";
+import { createBudgetController } from "../controllers/budget/createBudgetController.js";
+import { getAllBudgetsController } from "../controllers/budget/getAllBudgetsController.js";
+import { deleteBudgetController } from "../controllers/budget/deleteBudgetController.js";
+import { editBudgetController } from "../controllers/budget/editBudgetController.js";
 
 export const budgetRoute = express.Router();
 
 budgetRoute.post(
   "/categories/:categoryId/budgets",
   passport.authenticate("jwt", { session: false }),
-  createBudgetController
+  createBudgetController,
 );
 
 budgetRoute.get(
   "/categories/:categoryId/budgets",
   passport.authenticate("jwt", { session: false }),
-  getAllBudgetsController
+  getAllBudgetsController,
 );
 
 budgetRoute.delete(
   "/categories/:categoryId/budgets/:budgetId",
   passport.authenticate("jwt", { session: false }),
-  deleteBudgetController
+  deleteBudgetController,
 );
 
 budgetRoute.patch(
   "/categories/:categoryId/budgets/:budgetId",
   passport.authenticate("jwt", { session: false }),
-  editBudgetController
+  editBudgetController,
 );

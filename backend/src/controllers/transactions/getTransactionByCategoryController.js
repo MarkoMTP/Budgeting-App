@@ -1,4 +1,4 @@
-import { getTranscationByCategoryId } from "../../queries/transactionQueries";
+import { getTranscationByCategoryId } from "../../queries/transactionQueries.js";
 
 export async function getTransactionsByCategoryController(req, res) {
   const { categoryId } = req.params;

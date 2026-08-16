@@ -1,4 +1,4 @@
-import { prisma } from "../prismaClient";
+import { prisma } from "../prismaClient.js";
 
 export const createBudget = async (userId, categoryId, amount, month, year) => {
   return prisma.budget.create({
@@ -16,7 +16,7 @@ export const findSpecificBudget = async function (
   userId,
   categoryId,
   month,
-  year
+  year,
 ) {
   const result = await prisma.budget.findFirst({
     where: { userId, categoryId, month, year },

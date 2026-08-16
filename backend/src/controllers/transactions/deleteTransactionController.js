@@ -1,7 +1,7 @@
 import {
   deleteTransactionWithId,
   getTranscationById,
-} from "../../queries/transactionQueries";
+} from "../../queries/transactionQueries.js";
 
 export async function deleteTransactionByIdController(req, res) {
   const { id } = req.params;

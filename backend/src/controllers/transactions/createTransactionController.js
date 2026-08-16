@@ -1,5 +1,5 @@
-import { findCategoryById } from "../../queries/categoryQueries";
-import { createTransaction } from "../../queries/transactionQueries";
+import { findCategoryById } from "../../queries/categoryQueries.js";
+import { createTransaction } from "../../queries/transactionQueries.js";
 
 export async function createTransactionController(req, res) {
   const { name, amount, categoryId } = req.body;
@@ -31,7 +31,7 @@ export async function createTransactionController(req, res) {
       name,
       amountInCents,
       categoryId,
-      user.id
+      user.id,
     );
 
     if (newCategory)

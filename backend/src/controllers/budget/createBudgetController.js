@@ -1,4 +1,4 @@
-import { createBudget } from "../../queries/budgetQueries";
+import { createBudget } from "../../queries/budgetQueries.js";
 
 export async function createBudgetController(req, res) {
   const { amount, month, year } = req.body;
@@ -20,7 +20,7 @@ export async function createBudgetController(req, res) {
       categoryId,
       amount,
       month,
-      year
+      year,
     );
 
     if (!createdBudget) return res.status(400).send("Failed to create budget");

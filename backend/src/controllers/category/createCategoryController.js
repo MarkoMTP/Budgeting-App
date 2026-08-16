@@ -2,7 +2,7 @@ import { json } from "express";
 import {
   createCategory,
   findCategoryByName,
-} from "../../queries/categoryQueries";
+} from "../../queries/categoryQueries.js";
 
 export async function createNewCategory(req, res) {
   const { name } = req.body;

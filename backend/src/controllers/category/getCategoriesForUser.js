@@ -1,4 +1,4 @@
-import { getCategoriesForUser } from "../../queries/categoryQueries";
+import { getCategoriesForUser } from "../../queries/categoryQueries.js";
 
 export async function getCategoriesForUserController(req, res) {
   const user = req.user;

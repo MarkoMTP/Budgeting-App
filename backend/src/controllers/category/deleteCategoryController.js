@@ -4,7 +4,7 @@ import {
   findCategoryById,
   findCategoryByName,
   deleteCategoryWithId,
-} from "../../queries/categoryQueries";
+} from "../../queries/categoryQueries.js";
 
 export async function deleteCategory(req, res) {
   const { id } = req.params;

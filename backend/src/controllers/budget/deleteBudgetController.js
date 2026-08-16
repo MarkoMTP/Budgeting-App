@@ -2,8 +2,8 @@ import {
   deleteBudget,
   findBudgetById,
   findSpecificBudget,
-} from "../../queries/budgetQueries";
-import { findCategoryById } from "../../queries/categoryQueries";
+} from "../../queries/budgetQueries.js";
+import { findCategoryById } from "../../queries/categoryQueries.js";
 
 export async function deleteBudgetController(req, res) {
   const { categoryId, budgetId } = req.params;

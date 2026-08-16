@@ -2,10 +2,10 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import passport from "passport";
-import registerRouter from "./routes/register&LoginRoutes";
-import { categoryRoute } from "./routes/categoryRoutes";
-import { transactionRoute } from "./routes/transactionRoutes";
-import { budgetRoute } from "./routes/budgetRoutes";
+import registerRouter from "./routes/register&LoginRoutes.js";
+import { categoryRoute } from "./routes/categoryRoutes.js";
+import { transactionRoute } from "./routes/transactionRoutes.js";
+import { budgetRoute } from "./routes/budgetRoutes.js";
 
 dotenv.config();
 

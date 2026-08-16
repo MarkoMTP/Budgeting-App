@@ -1,5 +1,5 @@
 import express from "express";
-import passport from "../auth/passport.js";
+import { initPassport } from "../auth/passport.js";
 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

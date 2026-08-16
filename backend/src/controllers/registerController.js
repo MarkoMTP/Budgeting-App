@@ -1,4 +1,4 @@
-import { addUserToDb, findUserEmail } from "../queries/userQueries";
+import { addUserToDb, findUserEmail } from "../queries/userQueries.js";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 

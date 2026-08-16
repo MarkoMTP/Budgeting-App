@@ -2,7 +2,7 @@ import {
   editCategory,
   findCategoryById,
   findCategoryByName,
-} from "../../queries/categoryQueries";
+} from "../../queries/categoryQueries.js";
 
 export async function editCategoryController(req, res) {
   const { id } = req.params;
