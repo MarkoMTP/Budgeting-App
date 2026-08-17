@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 // Decide the connection string BEFORE PrismaClient() is created.
 const isTest = process.env.NODE_ENV === "test";
@@ -13,7 +13,7 @@ if (!baseEnvUrl) {
     `Missing database url. NODE_ENV=${
       process.env.NODE_ENV
     } DATABASE_URL=${!!process.env.DATABASE_URL} TEST_DATABASE_URL=${!!process
-      .env.TEST_DATABASE_URL}`
+      .env.TEST_DATABASE_URL}`,
   );
 }
 
@@ -27,7 +27,9 @@ if (isTest) {
 }
 
 // Prevent multiple Prisma instances in dev/test (module reloads, watch mode)
-const globalForPrisma = globalThis;
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
 export const prisma =
   globalForPrisma.prisma ||

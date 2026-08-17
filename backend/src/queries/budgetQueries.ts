@@ -1,25 +1,17 @@
 import { prisma } from "../prismaClient.js";
+import type { NewBudget, NewBudgetNoAmount } from "../types/budgetTypes.js";
 
-export const createBudget = async (userId, categoryId, amount, month, year) => {
+export const createBudget = async (budget: NewBudget) => {
   return prisma.budget.create({
     data: {
-      userId,
-      categoryId,
-      amount,
-      month,
-      year,
+      ...budget,
     },
   });
 };
 
-export const findSpecificBudget = async function (
-  userId,
-  categoryId,
-  month,
-  year,
-) {
+export const findSpecificBudget = async (budget: NewBudgetNoAmount) => {
   const result = await prisma.budget.findFirst({
-    where: { userId, categoryId, month, year },
+    where: { ...budget },
   });
 
   return result;
