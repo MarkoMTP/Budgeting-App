@@ -28,7 +28,9 @@ export async function createBudgetController(
       year,
     };
 
-    return res.status(200).send("Budget set correctly");
+    const createdBudget = await createBudget(budget);
+
+    return res.status(200).json(createdBudget);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({

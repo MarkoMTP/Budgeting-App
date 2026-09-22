@@ -1,6 +1,6 @@
 import { prisma } from "../prismaClient.js";
 
-export const createCategory = async (name, userId) => {
+export const createCategory = async (name: string, userId: string) => {
   return prisma.category.create({
     data: {
       name,
@@ -9,7 +9,7 @@ export const createCategory = async (name, userId) => {
   });
 };
 
-export const findCategoryByName = async function (name) {
+export const findCategoryByName = async function (name: string) {
   const result = await prisma.category.findFirst({
     where: { name },
   });
@@ -17,7 +17,7 @@ export const findCategoryByName = async function (name) {
   return result;
 };
 
-export const findCategoryById = async function (id) {
+export const findCategoryById = async function (id: string) {
   const result = await prisma.category.findFirst({
     where: { id },
   });
@@ -25,13 +25,16 @@ export const findCategoryById = async function (id) {
   return result;
 };
 
-export const deleteCategoryWithId = async function (categoryId) {
+export const deleteCategoryWithId = async function (categoryId: string) {
   await prisma.category.delete({
     where: { id: categoryId },
   });
 };
 
-export const editCategory = async function (categoryId, newName) {
+export const editCategory = async function (
+  categoryId: string,
+  newName: string,
+) {
   const newCat = await prisma.category.update({
     where: { id: categoryId },
     data: { name: newName },
@@ -40,7 +43,7 @@ export const editCategory = async function (categoryId, newName) {
   return newCat;
 };
 
-export const getCategoriesForUser = async function (userId) {
+export const getCategoriesForUser = async function (userId: string) {
   const result = await prisma.category.findMany({
     where: { userId: userId },
   });

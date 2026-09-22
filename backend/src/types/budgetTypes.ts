@@ -21,3 +21,8 @@ export type NewBudgetBody = z.infer<typeof NewBudgetBodySchema>;
 export type BudgetParams = {
   categoryId: string;
 };
+
+export type DeleteBudgetParams = {
+  categoryId: string;
+  budgetId: string;
+};
