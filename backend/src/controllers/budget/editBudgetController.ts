@@ -9,6 +9,7 @@ import {
   EditBudgetBodySchema,
   type EditBudgetBody,
 } from "../../types/budgetTypes.js";
+import z from "zod";
 
 export async function editBudgetController(
   req: Request<
@@ -43,8 +44,16 @@ export async function editBudgetController(
 
     await editBudget(budgetId, amount);
     return res.status(200).send("Budget updated successfully");
-  } catch (err: unknown) {
-    console.error(err);
-    return res.status(500).json({ message: `${err}` });
+  } catch (error: unknown) {
+    console.error(error);
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        error: error.issues,
+      });
+    }
+
+    return res.status(500).json({
+      error: "unknown error",
+    });
   }
 }

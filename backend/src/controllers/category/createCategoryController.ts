@@ -7,6 +7,7 @@ import {
   CreateCategoryNameSchema,
   type CreateCategoryName,
 } from "../../types/categoryTypes.js";
+import z from "zod";
 
 export async function createNewCategory(
   req: Request<unknown, unknown, CreateCategoryName>,
@@ -25,8 +26,15 @@ export async function createNewCategory(
 
     const createdCategory = await createCategory(name, user.id);
     return res.status(200).send(createdCategory.name);
-  } catch (err: unknown) {
-    console.error(err);
-    return res.status(500).json({ error: `${err}` });
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        error: error.issues,
+      });
+    }
+
+    return res.status(500).json({
+      error: "unknown error",
+    });
   }
 }
