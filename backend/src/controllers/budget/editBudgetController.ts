@@ -51,6 +51,7 @@ export async function editBudgetController(
         error: error.issues,
       });
     }
+    console.error(error);
 
     return res.status(500).json({
       error: "unknown error",

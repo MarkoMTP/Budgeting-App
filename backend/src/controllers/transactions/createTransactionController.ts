@@ -45,7 +45,7 @@ export async function createTransactionController(
         error: error.issues,
       });
     }
-
+    console.error(error);
     return res.status(500).json({
       error: "unknown error",
     });
