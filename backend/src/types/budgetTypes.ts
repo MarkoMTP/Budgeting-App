@@ -26,3 +26,9 @@ export type DeleteBudgetParams = {
   categoryId: string;
   budgetId: string;
 };
+
+export const EditBudgetBodySchema = z.object({
+  amount: z.number().nonnegative(),
+});
+
+export type EditBudgetBody = z.infer<typeof EditBudgetBodySchema>;

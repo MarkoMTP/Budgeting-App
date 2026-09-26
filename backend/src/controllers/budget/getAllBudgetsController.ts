@@ -1,7 +1,11 @@
 import { getAllBudgetsOfCategory } from "../../queries/budgetQueries.js";
 import { findCategoryById } from "../../queries/categoryQueries.js";
+import type { Request, Response } from "express";
 
-export async function getAllBudgetsController(req, res) {
+export async function getAllBudgetsController(
+  req: Request<{ categoryId: string }, unknown, unknown>,
+  res: Response,
+) {
   const { categoryId } = req.params;
 
   if (!categoryId) {
@@ -14,14 +18,12 @@ export async function getAllBudgetsController(req, res) {
 
     const budgets = await getAllBudgetsOfCategory(categoryId);
 
-    const budgetIds = budgets.map((budget) => budget.id);
-
     if (budgets.length === 0)
       return res.status(400).send("Category has no budgets");
 
     return res.status(200).json(budgets);
-  } catch (error) {
-    console.error(error);
+  } catch (err: unknown) {
+    console.error(err);
     return res.status(500).json({ message: `${err}` });
   }
 }
