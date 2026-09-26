@@ -1,6 +1,7 @@
 import { getAllTransactions } from "../../queries/transactionQueries.js";
+import type { Request, Response } from "express";
 
-export async function getTransactionsController(req, res) {
+export async function getTransactionsController(req: Request, res: Response) {
   const user = req.user;
 
   if (!user) {
@@ -14,7 +15,7 @@ export async function getTransactionsController(req, res) {
       return res.status(400).send("User has no transactions ");
 
     return res.status(200).json(transactions);
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error fetching transactions:", err);
     return res.status(500).send("Failed to retrieve transactions");
   }

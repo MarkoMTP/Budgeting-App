@@ -2,11 +2,13 @@ import {
   deleteTransactionWithId,
   getTranscationById,
 } from "../../queries/transactionQueries.js";
+import type { Request, Response } from "express";
 
-export async function deleteTransactionByIdController(req, res) {
+export async function deleteTransactionByIdController(
+  req: Request<{ id: string }, unknown, unknown>,
+  res: Response,
+) {
   const { id } = req.params;
-
-  if (!id) return res.status(400).send("Transaction id not provided");
 
   try {
     const transaction = await getTranscationById(id);
@@ -15,13 +17,8 @@ export async function deleteTransactionByIdController(req, res) {
 
     await deleteTransactionWithId(id);
 
-    const stillExists = await getTranscationById(id);
-
-    if (stillExists)
-      return res.status(400).send("Failed to delete transaction");
-
     return res.status(200).send("Successfully deleted transaction");
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error deleting transaction:", err);
     return res.status(500).send("Failed to delete transaction");
   }

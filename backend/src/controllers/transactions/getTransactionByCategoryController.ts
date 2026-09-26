@@ -1,6 +1,10 @@
 import { getTranscationByCategoryId } from "../../queries/transactionQueries.js";
+import type { Request, Response } from "express";
 
-export async function getTransactionsByCategoryController(req, res) {
+export async function getTransactionsByCategoryController(
+  req: Request<{ categoryId: string }, unknown, unknown>,
+  res: Response,
+) {
   const { categoryId } = req.params;
   const user = req.user;
 
@@ -14,8 +18,8 @@ export async function getTransactionsByCategoryController(req, res) {
     if (transactions.length === 0)
       return res.status(400).send("No transactions found in category");
 
-    return res.status(200).send(transactions);
-  } catch (err) {
+    return res.status(200).json(transactions);
+  } catch (err: unknown) {
     console.error("Error fetching transactions:", err);
     return res.status(500).send("Failed to retrieve transactions");
   }
