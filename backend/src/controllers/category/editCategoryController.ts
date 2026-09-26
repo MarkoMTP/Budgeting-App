@@ -3,12 +3,19 @@ import {
   findCategoryById,
   findCategoryByName,
 } from "../../queries/categoryQueries.js";
+import type { Request, Response } from "express";
+import {
+  CreateCategoryNameSchema,
+  type CreateCategoryName,
+} from "../../types/categoryTypes.js";
 
-export async function editCategoryController(req, res) {
-  const { id } = req.params;
-  const { name } = req.body;
-
+export async function editCategoryController(
+  req: Request<{ id: string }, unknown, CreateCategoryName>,
+  res: Response,
+) {
   try {
+    const { id } = req.params;
+    const { name } = CreateCategoryNameSchema.parse(req.body);
     // see if category exists
     const categoryCheck = await findCategoryById(id);
 
@@ -16,9 +23,6 @@ export async function editCategoryController(req, res) {
       return res
         .status(400)
         .send("Category does not exist, you cannot edit it");
-
-    if (!name)
-      return res.status(400).send("Missing the new name for the category");
 
     const checkCatName = await findCategoryByName(name);
 
@@ -32,7 +36,7 @@ export async function editCategoryController(req, res) {
     return res
       .status(200)
       .send(`Categories name has been updated to ${newCat.name}`);
-  } catch (err) {
+  } catch (err: unknown) {
     console.error(err);
     return res.status(500).json({ error: `${err}` });
   }

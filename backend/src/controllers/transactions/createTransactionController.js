@@ -4,6 +4,7 @@ import { createTransaction } from "../../queries/transactionQueries.js";
 export async function createTransactionController(req, res) {
   const { name, amount, categoryId } = req.body;
   const user = req.user;
+
   if (!name) {
     return res.status(400).send("Failed to create transaction, name missing");
   }

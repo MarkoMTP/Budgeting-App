@@ -1,12 +1,15 @@
-import { json } from "express";
 import {
   createCategory,
   findCategoryById,
   findCategoryByName,
   deleteCategoryWithId,
 } from "../../queries/categoryQueries.js";
+import type { Request, Response } from "express";
 
-export async function deleteCategory(req, res) {
+export async function deleteCategory(
+  req: Request<{ id: string }, unknown, unknown>,
+  res: Response,
+) {
   const { id } = req.params;
 
   try {
@@ -21,7 +24,7 @@ export async function deleteCategory(req, res) {
     return res
       .status(200)
       .send(`${categoryExists.name} has been successfully deleted`);
-  } catch (err) {
+  } catch (err: unknown) {
     return res.status(500).json({ error: `${err}` });
   }
 }
