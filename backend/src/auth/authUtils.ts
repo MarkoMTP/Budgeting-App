@@ -3,15 +3,15 @@ import jwt from "jsonwebtoken";
 
 const SALT_ROUNDS = 10;
 
-export async function hashPassworfd(password) {
+export async function hashPassword(password: string) {
   return bcrypt.hash(password, SALT_ROUNDS);
 }
 
-export async function verifyPassword(password, hash) {
+export async function verifyPassword(password: string, hash: string) {
   return bcrypt.compare(password, hash);
 }
 
-export async function signToken(userId) {
+export async function signToken(userId: string) {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("Jwt secret is not set");
 

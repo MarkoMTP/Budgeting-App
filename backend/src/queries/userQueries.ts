@@ -1,6 +1,7 @@
 import { prisma } from "../prismaClient.js";
+import type { NewUser } from "../types/userTypes.js";
 
-export const findUserEmail = async function (email) {
+export const findUserEmail = async function (email: string) {
   const result = await prisma.user.findUnique({
     where: { email },
     select: { id: true, email: true, passwordHash: true },
@@ -8,12 +9,10 @@ export const findUserEmail = async function (email) {
   return result;
 };
 
-export const addUserToDb = async function (fullName, email, password) {
+export const addUserToDb = async function (user: NewUser) {
   const result = await prisma.user.create({
     data: {
-      name: fullName,
-      email,
-      passwordHash: password,
+      ...user,
     },
   });
   return result;
