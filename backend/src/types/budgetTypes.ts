@@ -32,3 +32,12 @@ export const EditBudgetBodySchema = z.object({
 });
 
 export type EditBudgetBody = z.infer<typeof EditBudgetBodySchema>;
+
+export type BudgetType = {
+  id: string;
+  userId: string;
+  categoryId: string;
+  amount: number;
+  month: number;
+  year: number;
+};

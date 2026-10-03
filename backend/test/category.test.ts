@@ -2,8 +2,9 @@ import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
-import { app } from "../src/index";
+import { app } from "../src/index.js";
 import dotenv from "dotenv";
+import { prisma } from "../src/prismaClient.js";
 
 dotenv.config();
 
@@ -99,7 +100,7 @@ describe("Category crud functions tests", () => {
       .send({ name: "newUpdatedCategory" });
 
     expect(res.text).toBe(
-      "Categories name has been updated to newUpdatedCategory"
+      "Categories name has been updated to newUpdatedCategory",
     );
   });
 
@@ -132,7 +133,7 @@ describe("Category crud functions tests", () => {
 
     expect(res.status).toBe(400);
     expect(res.text).toBe(
-      "Fails editing category when new name is already in use"
+      "Fails editing category when new name is already in use",
     );
   });
 });

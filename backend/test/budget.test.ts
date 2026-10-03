@@ -2,7 +2,8 @@ import { describe, it, expect } from "vitest";
 import request from "supertest";
 import dotenv from "dotenv";
 
-import { app } from "../src/index";
+import { app } from "../src/index.js";
+import type { BudgetType } from "../src/types/budgetTypes.js";
 
 dotenv.config();
 
@@ -196,7 +197,7 @@ describe("Budget create API", () => {
     expect(getRes.status).toBe(200);
 
     const updatedBudget = getRes.body.find(
-      (budget) => budget.id === "lifestyleBudgetAugust2024"
+      (budget: BudgetType) => budget.id === "lifestyleBudgetAugust2024",
     );
 
     expect(updatedBudget).toBeDefined();

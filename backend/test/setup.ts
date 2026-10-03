@@ -2,13 +2,16 @@ import dotenv from "dotenv";
 import { beforeAll, beforeEach, afterAll, vi } from "vitest";
 import bcrypt from "bcrypt";
 import { execSync } from "child_process";
+import type { NextFunction, Request } from "express";
 
 // 1) Set test env FIRST (before importing Prisma from src/prismaClient.js)
 process.env.NODE_ENV = "test";
 dotenv.config({ path: ".env.test" });
 
-let prisma;
-let resetDb;
+import type { PrismaClient } from "@prisma/client";
+
+let prisma: PrismaClient;
+let resetDb: () => Promise<void>;
 
 beforeAll(async () => {
   // 2) Import Prisma AFTER env is loaded so it points to the TEST DB
@@ -175,8 +178,9 @@ afterAll(async () => {
 
 vi.mock("passport", () => {
   const passportMock = {
-    initialize: () => (req, res, next) => next(),
-    authenticate: () => (req, res, next) => {
+    initialize: () => (req: Request, res: Response, next: NextFunction) =>
+      next(),
+    authenticate: () => (req: Request, res: Response, next: NextFunction) => {
       req.user = { id: "1Category", email: "existingCategory@test.com" };
       next();
     },

@@ -2,8 +2,9 @@ import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
-import { app } from "../src/index";
+import { app } from "../src/index.js";
 import dotenv from "dotenv";
+import { prisma } from "../src/prismaClient.js";
 
 dotenv.config();
 const testToken = "1";
@@ -64,7 +65,7 @@ describe("Transactions crud function tests", () => {
 
     expect(res.status).toBe(400);
     expect(res.text).toBe(
-      "Failed to create transaction, category does not exist"
+      "Failed to create transaction, category does not exist",
     );
   });
 
