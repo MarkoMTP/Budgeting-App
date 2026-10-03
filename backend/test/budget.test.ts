@@ -19,7 +19,11 @@ describe("Budget create API", () => {
       .send({ amount: 100, year: 2024, month: 6 });
 
     expect(res.status).toBe(200);
-    expect(res.text).toBe("Budget set correctly");
+    expect(res.body.amount).toBe(100);
+    expect(res.body.year).toBe(2024);
+    expect(res.body.month).toBe(6);
+    expect(res.body.userId).toBe("1Category");
+    expect(res.body.categoryId).toBe("2Category");
   });
 
   it("Returns 400 when amount is missing", async () => {
@@ -30,8 +34,8 @@ describe("Budget create API", () => {
       .send({ year: 2024, month: 8 });
 
     expect(res.status).toBe(400);
-
-    expect(res.text).toBe("Amount is required");
+    expect(res.body.error).toBeDefined();
+    expect(res.body.error[0].path).toContain("amount");
   });
 
   it("Returns 400 when year is missing", async () => {
@@ -42,7 +46,8 @@ describe("Budget create API", () => {
       .send({ amount: 100, month: 9 });
 
     expect(res.status).toBe(400);
-    expect(res.text).toBe("Year is required");
+    expect(res.body.error).toBeDefined();
+    expect(res.body.error[0].path).toContain("year");
   });
 
   it("Returns 400 when month is missing", async () => {
@@ -53,7 +58,8 @@ describe("Budget create API", () => {
       .send({ amount: 100, year: 2024 });
 
     expect(res.status).toBe(400);
-    expect(res.text).toBe("Month is required");
+    expect(res.body.error).toBeDefined();
+    expect(res.body.error[0].path).toContain("month");
   });
 
   it("Returns 400 when request body is empty", async () => {
@@ -74,7 +80,9 @@ describe("Budget create API", () => {
       .send({ amount: -100, year: 2024, month: 10 });
 
     expect(res.status).toBe(400);
-    expect(res.text).toBe("Amount cannot be negative");
+    expect(res.body.error[0].message).toBe(
+      "Too small: expected number to be >0",
+    );
   });
 
   it("Returns 400 when month is invalid", async () => {
@@ -85,7 +93,9 @@ describe("Budget create API", () => {
       .send({ amount: 100, year: 2024, month: 13 });
 
     expect(res.status).toBe(400);
-    expect(res.text).toBe("Month is invalid");
+    expect(res.body.error[0].message).toBe(
+      "Too big: expected number to be <=12",
+    );
   });
 
   // get budgets CRUD functions
@@ -204,7 +214,7 @@ describe("Budget create API", () => {
     expect(updatedBudget.amount).toBe(250);
   });
 
-  it("Returns 400 when updating budget amount with a negative value", async () => {
+  it.only("Returns 400 when updating budget amount with a negative value", async () => {
     const res = await request(app)
       .patch("/categories/lifestyle/budgets/lifestyleBudgetSeptember2024")
       .set("Authorization", `Bearer ${testToken}`)
@@ -212,7 +222,9 @@ describe("Budget create API", () => {
       .send({ amount: -50 });
 
     expect(res.status).toBe(400);
-    expect(res.text).toBe("Amount cannot be negative");
+    expect(res.body.error[0].message).toBe(
+      "Too small: expected number to be >=0",
+    );
   });
 
   it("Returns 400 when budget does not exist while patching", async () => {

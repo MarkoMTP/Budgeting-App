@@ -14,7 +14,7 @@ describe("Registration tests", () => {
       });
 
     expect(res.status).toBe(200);
-    expect(res.text).toBe("Registration success");
+    expect(res.text).toBe("Registration Successfull, added user Test User2");
   });
 
   it("Registration fails, user already exists", async () => {
