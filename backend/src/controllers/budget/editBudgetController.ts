@@ -19,15 +19,12 @@ export async function editBudgetController(
   >,
   res: Response,
 ) {
-  const { categoryId, budgetId } = req.params;
-  const { amount } = EditBudgetBodySchema.parse(req.body);
-
-  if (!categoryId) return res.status(400).send("Missing categoryId");
-  if (!budgetId) return res.status(400).send("Missing budgetId");
-  if (Number(amount) < 0)
-    return res.status(400).send("Amount cannot be negative");
-
   try {
+    const { categoryId, budgetId } = req.params;
+    const { amount } = EditBudgetBodySchema.parse(req.body);
+
+    if (!categoryId) return res.status(400).send("Missing categoryId");
+    if (!budgetId) return res.status(400).send("Missing budgetId");
     const category = await findCategoryById(categoryId);
     if (!category) {
       return res.status(400).send("Category does not exist");
@@ -45,7 +42,6 @@ export async function editBudgetController(
     await editBudget(budgetId, amount);
     return res.status(200).send("Budget updated successfully");
   } catch (error: unknown) {
-    console.error(error);
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: error.issues,
